@@ -1,0 +1,23 @@
+{
+  "name": "asset-export",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+
+  "asset-export": {
+    "dir": {
+      "svg": "/assets/svg",
+      "images": "/assets/images"
+    },
+    "var-prefix": {
+      "svg": "SVG_",
+      "images": "IMG_"
+    }
+  }
+}
