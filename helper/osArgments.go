@@ -31,11 +31,13 @@ func ProcessArg(arg string) {
 	switch flag {
 
 	case "--dir":
-		config.AssetDir = valueWithFallback(value, "/assets/img")
+
+		config.AssetDir = valueWithFallback(value, "")
 		return
 
 	case "--prefix":
 		config.AssetPrefix = valueWithFallback(value, "IMG_")
+		println(config.AssetPrefix)
 		return
 
 	case "--output":

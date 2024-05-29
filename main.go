@@ -7,16 +7,13 @@ import (
 	"github.com/mrbns/assetLoader/internal/generator"
 )
 
-func init() {
+func main() {
 
 	args := os.Args
 
 	for _, arg := range args {
 		helper.ProcessArg(arg)
 	}
-}
-
-func main() {
 
 	generator.GenerateAsset("")
 

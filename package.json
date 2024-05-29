@@ -1,5 +1,5 @@
 {
-  "name": "asset-export",
+  "name": "@bns/asset-loader",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

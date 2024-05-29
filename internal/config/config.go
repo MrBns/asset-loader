@@ -1,6 +1,10 @@
 package config
 
-var config Config
+var config = Config{
+	AssetDir:    "",
+	AssetPrefix: "IMG_",
+	OutputFile:  "index.ts",
+}
 
 type Config struct {
 	AssetDir    string

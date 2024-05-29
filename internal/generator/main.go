@@ -32,19 +32,20 @@ func isValidFiles(fileName string) bool {
 }
 
 func getFiles() error {
+
 	if config.AssetDir == "" {
 		return errors.New("please provide asset directory eg. --dir=/src/assets")
 	}
 
 	fileDir := path.Join(projectRoot, config.AssetDir)
 	entries, err := os.ReadDir(fileDir)
-	if err != nil || len(entries) <= 0 {
-		fmt.Print(color.RedString("❌ %s Directory Doesn't Exist. \n Please Provide a Valid Directory name", fileDir))
-		os.Exit(1)
+	helper.ErrorColorizedExit(err)
+	if len(entries) <= 0 {
+		return errors.New("no files found")
 	}
 
 	for _, ent := range entries {
-		// Code to handle each entry goes here
+
 		if isValidFiles(ent.Name()) {
 			assets = append(assets, ent.Name())
 		}
@@ -53,46 +54,25 @@ func getFiles() error {
 	return nil
 }
 
-// func restorePrevious() ([]string, error) {
-// 	outputFile := path.Join(projectRoot, config.AssetDir, config.OutputFile)
-// 	oldFiles := make([]string, 0)
-
-// 	file, err := os.Open(filepath.Join(outputFile))
-// 	helper.FatalIfError(err)
-// 	defer file.Close()
-
-// 	scanner := bufio.NewScanner(file)
-// 	for scanner.Scan() {
-// 		line := scanner.Text()
-
-// 	}
-// 	helper.FatalIfError(scanner.Err())
-
-// 	return make([]string, 0), nil
-// }
-
 func GenerateAsset(directoryPath string) {
-	getFiles()
-	projectRoot, _ := os.Getwd()
-	outputImgFile := filepath.Join(projectRoot, fmt.Sprintf("%v/%v", config.AssetDir, config.OutputFile))
 
-	// Writing to file
-	file, err := os.Create(outputImgFile)
-
-	helper.FatalIfError(err)
-	defer file.Close()
-
+	//Checking Asset Directory
 	if config.AssetDir == "" {
-		return
-	}
-	assetDir := path.Join(projectRoot, config.AssetDir)
-
-	if len(assets) < 1 {
-		fmt.Println(color.RedString("❌ No Files Found in Folder - %s", assetDir))
-		file.WriteString("")
+		fmt.Println(color.RedString("Error: please provide asset directory eg. --dir=/src/assets"))
 		os.Exit(1)
 		return
 	}
+
+	err := getFiles()
+	helper.ErrorColorizedExit(err)
+
+	projectRoot, _ := os.Getwd()
+	outputScriptFile := filepath.Join(projectRoot, fmt.Sprintf("%v/%v", config.AssetDir, config.OutputFile))
+
+	// Writing to file
+	file, err := os.Create(outputScriptFile)
+	helper.ErrorFatal(err, "")
+	defer file.Close()
 
 	for index, name := range assets {
 		ext := filepath.Ext(name)
@@ -105,10 +85,10 @@ func GenerateAsset(directoryPath string) {
 		if isValidFiles(name) {
 			_, err := file.WriteString(fmt.Sprintf("export { default as %v_%v } from \"./%v\";\n", config.AssetPrefix, strings.ToUpper(normalizedFileName), name))
 			fmt.Println(color.YellowString("✅ %d -  %s", index, name))
-			helper.FatalIfError(err)
+			helper.ErrorFatal(err, "")
 		}
 	}
 
-	fmt.Println(color.GreenString("🔥 added %s file at %s", config.OutputFile, outputImgFile))
+	fmt.Println(color.GreenString("🔥 added %s file at %s", config.OutputFile, outputScriptFile))
 	fmt.Println(color.BlueString("👋 Bye. see you again"))
 }
