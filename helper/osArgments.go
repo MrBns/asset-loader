@@ -37,7 +37,6 @@ func ProcessArg(arg string) {
 
 	case "--prefix":
 		config.AssetPrefix = valueWithFallback(value, "IMG_")
-		println(config.AssetPrefix)
 		return
 
 	case "--output":

@@ -84,11 +84,11 @@ func GenerateAsset(directoryPath string) {
 
 		if isValidFiles(name) {
 			_, err := file.WriteString(fmt.Sprintf("export { default as %v_%v } from \"./%v\";\n", config.AssetPrefix, strings.ToUpper(normalizedFileName), name))
-			fmt.Println(color.YellowString("✅ %d -  %s", index, name))
+			fmt.Println(color.CyanString("%d -  %s", index, name))
 			helper.ErrorFatal(err, "")
 		}
 	}
 
-	fmt.Println(color.GreenString("🔥 added %s file at %s", config.OutputFile, outputScriptFile))
-	fmt.Println(color.BlueString("👋 Bye. see you again"))
+	fmt.Println(color.GreenString("Added %s file at %s", config.OutputFile, config.AssetDir))
+	fmt.Println(color.HiBlueString("👋 Bye. see you again"))
 }
