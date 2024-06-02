@@ -74,6 +74,7 @@ func GenerateAsset(directoryPath string) {
 	helper.ErrorFatal(err, "")
 	defer file.Close()
 
+	fmt.Println("---- ------ BUILDING ------ ----")
 	for index, name := range assets {
 		ext := filepath.Ext(name)
 		fileNameWithoutExtension := name[:len(name)-len(ext)]
@@ -84,11 +85,12 @@ func GenerateAsset(directoryPath string) {
 
 		if isValidFiles(name) {
 			_, err := file.WriteString(fmt.Sprintf("export { default as %v_%v } from \"./%v\";\n", config.AssetPrefix, strings.ToUpper(normalizedFileName), name))
-			fmt.Println(color.CyanString("%d -  %s", index, name))
+			fmt.Println(color.CyanString("%d - %s", index+1, name))
 			helper.ErrorFatal(err, "")
 		}
 	}
 
+	fmt.Println("---- ------- END ------ ----")
 	fmt.Println(color.GreenString("Added %s file at %s", config.OutputFile, config.AssetDir))
 	fmt.Println(color.HiBlueString("👋 Bye. see you again"))
 }
